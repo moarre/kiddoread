@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "308640989680",
+    "project_id": "ohsem-9a0ae",
+    "storage_bucket": "ohsem-9a0ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308640989680:android:5bc6991a164c0a0b305d35",
+        "android_client_info": {
+          "package_name": "com.example.ohsem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308640989680-kvsfh019gfdf39dj1p5a7ojdb3ftgk1u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL-3m0RfYd4cYP64Jy0CR0xRxfRzwjoa4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308640989680-kvsfh019gfdf39dj1p5a7ojdb3ftgk1u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
