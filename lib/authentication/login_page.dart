@@ -60,6 +60,8 @@ class _LoginPageState extends State<LoginPage> {
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
 
+      print('google logged in');
+
       // Navigate to home page
       Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
