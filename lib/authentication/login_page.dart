@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,6 +11,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -60,10 +62,23 @@ class _LoginPageState extends State<LoginPage> {
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
 
-      print('google logged in');
+      User? user = userCredential.user;
+      if (user != null) {
+        // Save user data to Firestore
+        String displayName = user.displayName ?? 'Unknown User';
+        String email = user.email ?? '';
 
-      // Navigate to home page
-      Navigator.pushReplacementNamed(context, '/home');
+        final userRef = _firestore.collection('users').doc(user.uid);
+        await userRef.set({
+          'fullname': displayName,
+          'email': email,
+        });
+
+        print('Google logged in');
+
+        // Navigate to home page
+        Navigator.pushReplacementNamed(context, '/home');
+      }
     } catch (e) {
       // Handle login error
       showDialog(
