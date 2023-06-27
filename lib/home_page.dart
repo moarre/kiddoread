@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ohsem/pages/profile_screen.dart';
 
 class HomePage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -9,6 +10,11 @@ class HomePage extends StatelessWidget {
   Future<void> _logout(BuildContext context) async {
     await _auth.signOut();
     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+  }
+
+  Future<void> _profile(BuildContext context) async {
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (_) => ProfileScreen()));
   }
 
   @override
@@ -55,6 +61,13 @@ class HomePage extends StatelessWidget {
                   ),
                   SizedBox(height: 16.0),
                   ElevatedButton(
+                    onPressed: () {
+                      _profile(context);
+                    },
+                    child: Text('Profile'),
+                  ),
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
                     onPressed: () => _logout(context),
                     child: Text('Logout'),
                   ),
@@ -67,9 +80,9 @@ class HomePage extends StatelessWidget {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Home'),
+          title: const Text('Home'),
         ),
-        body: Center(
+        body: const Center(
           child: Text('User not logged in'),
         ),
       );
