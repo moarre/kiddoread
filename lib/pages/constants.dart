@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const String tProfile = 'John Doe';
-const String tProfileImage = 'assets/images/profile.jpg';
+const String tProfile = 'Profile';
+const String tProfileImage = 'assets/images/profileImage.jpg';
 const String tProfileHeading = 'Welcome to My Profile';
 const String tProfileSubHeading = 'Flutter Developer';
 const String tEditProfile = 'Edit';

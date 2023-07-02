@@ -13,7 +13,7 @@ class UpdateProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () => Get.back(),
+            onPressed: () => Navigator.of(context).pop(),
             icon: const Icon(LineAwesomeIcons.angle_left)),
         title: Text(tEditProfile, style: Theme.of(context).textTheme.headline4),
       ),
