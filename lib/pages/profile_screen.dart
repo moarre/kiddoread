@@ -13,7 +13,7 @@ class ProfileScreen extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
     String? userName = '';
     String? userEmail = '';
-    String? userProfileImage = user?.photoURL;
+    String? userProfileImage;
 
     if (user != null) {
       return FutureBuilder<DocumentSnapshot>(
@@ -37,10 +37,12 @@ class ProfileScreen extends StatelessWidget {
             // User logged in with email and password
             userName = userData['fullname'] ?? 'Unknown User';
             userEmail = userData['email'] ?? 'Unknown User';
+            userProfileImage = userData['image'] ?? null;
           } else if (user.providerData.first.providerId == 'google.com') {
             // User logged in with Google authentication
             userName = user.displayName ?? user.email ?? 'Unknown User';
             userEmail = user.email;
+            userProfileImage = user.photoURL;
           }
 
           return Scaffold(
@@ -50,8 +52,10 @@ class ProfileScreen extends StatelessWidget {
                 onPressed: () => Navigator.of(context).pop(),
                 icon: const Icon(LineAwesomeIcons.angle_left),
               ),
-              title: Text(tProfile,
-                  style: Theme.of(context).textTheme.headlineSmall),
+              title: Text(
+                tProfile,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
             ),
             body: SingleChildScrollView(
               child: Container(
@@ -64,9 +68,9 @@ class ProfileScreen extends StatelessWidget {
                         CircleAvatar(
                           radius: 60,
                           backgroundImage: userProfileImage != null
-                              ? NetworkImage(userProfileImage)
-                              : const AssetImage(tProfileImage)
-                                  as ImageProvider,
+                              ? NetworkImage(userProfileImage!)
+                              : AssetImage(tProfileImage)
+                                  as ImageProvider<Object>?,
                         ),
                         Positioned(
                           bottom: 0,
@@ -97,8 +101,8 @@ class ProfileScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const UpdateProfileScreen()),
+                              builder: (context) => const UpdateProfileScreen(),
+                            ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -106,8 +110,10 @@ class ProfileScreen extends StatelessWidget {
                           side: BorderSide.none,
                           shape: const StadiumBorder(),
                         ),
-                        child: const Text('Edit',
-                            style: TextStyle(color: tDarkColor)),
+                        child: const Text(
+                          'Edit',
+                          style: TextStyle(color: tDarkColor),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 30),
