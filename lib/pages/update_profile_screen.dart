@@ -22,11 +22,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   TextEditingController? currentPasswordController;
   TextEditingController? newPasswordController;
 
-  String profileImageUrl = 'assets/images/profileImage.jpg';
+  String profileImageUrl = '';
   File? pickedImage; // Add a File variable to hold the picked image
 
   String storedPassword =
       ''; // Variable to store the password retrieved from Firestore
+
+  bool isGoogleUser = false;
 
   @override
   void initState() {
@@ -49,12 +51,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         setState(() {
           fullNameController.text = snapshot['fullname'];
           emailController.text = snapshot['email'];
+          profileImageUrl = snapshot['image'];
           storedPassword = snapshot['password']; // Retrieve the stored password
 
-          // Set the profileImageUrl to the stored value if it exists, otherwise use the default asset image
-          profileImageUrl = snapshot['image'].isNotEmpty
-              ? snapshot['image']
-              : 'assets/profileImage.jpg';
+          // Check if the user is authenticated with Google
+          isGoogleUser = user.providerData
+              .any((provider) => provider.providerId == 'google.com');
         });
       }
     }
@@ -160,6 +162,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     const SizedBox(height: 20),
                     TextFormField(
                       controller: currentPasswordController,
+                      enabled:
+                          isGoogleUser, // Disable if user is authenticated with Google
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: "Current Password",
@@ -173,6 +177,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     const SizedBox(height: 20),
                     TextFormField(
                       controller: newPasswordController,
+                      enabled:
+                          isGoogleUser, // Disable if user is authenticated with Google
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: "New Password",
@@ -254,7 +260,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Wrong current password.')),
             );
-            return; // Exit the method if the current password is incorrect
+            return; // Exit the method if the currentpassword is incorrect
           }
 
           AuthCredential credential = EmailAuthProvider.credential(
