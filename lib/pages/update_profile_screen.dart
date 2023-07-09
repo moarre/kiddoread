@@ -22,7 +22,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   TextEditingController? currentPasswordController;
   TextEditingController? newPasswordController;
 
-  String profileImageUrl = '';
+  String profileImageUrl = 'assets/images/profileImage.jpg';
   File? pickedImage; // Add a File variable to hold the picked image
 
   String storedPassword =
@@ -49,8 +49,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         setState(() {
           fullNameController.text = snapshot['fullname'];
           emailController.text = snapshot['email'];
-          profileImageUrl = snapshot['image'];
           storedPassword = snapshot['password']; // Retrieve the stored password
+
+          // Set the profileImageUrl to the stored value if it exists, otherwise use the default asset image
+          profileImageUrl = snapshot['image'].isNotEmpty
+              ? snapshot['image']
+              : 'assets/profileImage.jpg';
         });
       }
     }
@@ -93,7 +97,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(tDefaultSize),
+          padding: const EdgeInsets.all(tDefaultSize),
           child: Column(
             children: [
               Stack(
@@ -107,7 +111,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           ? Image.file(pickedImage!)
                           : profileImageUrl.isNotEmpty
                               ? Image.network(profileImageUrl)
-                              : Image.asset(tProfileImage),
+                              : Image.asset(
+                                  profileImageUrl), // Use the updated profileImageUrl
                     ),
                   ),
                   Positioned(
@@ -138,7 +143,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   children: [
                     TextFormField(
                       controller: fullNameController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: "Full Name",
                         prefixIcon: Icon(LineAwesomeIcons.user),
                       ),
@@ -147,7 +152,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     TextFormField(
                       controller: emailController,
                       enabled: false,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: "Email",
                         prefixIcon: Icon(LineAwesomeIcons.envelope_1),
                       ),
@@ -198,7 +203,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text.rich(
+                        const Text.rich(
                           TextSpan(
                             text: "Joined",
                             style: TextStyle(fontSize: 12),
